@@ -1,0 +1,13 @@
+
+
+services:
+  easyocr_gradio:
+    image: xiaoyao9184/easyocr:master
+    container_name: easyocr_gradio
+    # environment:
+    #   - EASYOCR_MODULE_PATH=/root/.EasyOCR
+    ports:
+      - "7860:7860"
+    volumes:
+      - ./../../models:/root/.EasyOCR
+      - ./../../.gradio/:/workspace

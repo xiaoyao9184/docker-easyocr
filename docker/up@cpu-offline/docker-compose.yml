@@ -1,0 +1,14 @@
+
+
+services:
+  easyocr_gradio:
+    image: xiaoyao9184/easyocr:1.7.2
+    container_name: easyocr_gradio
+    entrypoint: /bin/bash -c "sed -i 's/torch.hub.download_url_to_file/#torch.hub.download_url_to_file/g' /app/gradio/app.py && python /app/gradio/app.py"
+    environment:
+      - EASYOCR_MODULE_PATH=/root/.EasyOCR
+    ports:
+      - "7860:7860"
+    volumes:
+      - ./../../models:/root/.EasyOCR
+      - ./../../.gradio/:/workspace
