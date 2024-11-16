@@ -1,0 +1,10 @@
+name: easyocr
+channels:
+  - pytorch
+dependencies:
+  - python=3.10
+
+  - pip:
+    - -e ./EasyOCR
+    - gradio==2.8.10
+    - fastapi==0.75.0
