@@ -10,5 +10,5 @@ services:
     ports:
       - "7860:7860"
     volumes:
-      - ./../../models:/root/.EasyOCR
+      - ./../../cache/huggingface/hub/models--xiaoyao9184--easyocr/snapshots/17cdb173ef73b32eb6e9d1270f33b30154b03908:/root/.EasyOCR/model
       - ./../../.gradio/:/workspace
