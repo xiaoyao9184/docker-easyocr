@@ -1,0 +1,11 @@
+
+
+services:
+  easyocr_model:
+    build:
+      context: ./../../
+      dockerfile: ./EasyOCR/Dockerfile
+    image: xiaoyao9184/easyocr:github-model-download
+    command: ["python", "/root/.EasyOCR/download.py"]
+    volumes:
+      - ./../../models:/root/.EasyOCR
