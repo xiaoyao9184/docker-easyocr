@@ -1,0 +1,71 @@
+
+name: HuggingFace Model Publish tag with version
+
+on:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - .github/workflows/hf-model-tag-version.yml
+  workflow_dispatch:
+    inputs:
+      easyocr_version:
+        description: easyocr version of pypi
+        required: true
+        default: 1.7.2
+
+jobs:
+  download-and-push-hf-model:
+    name: Download Github Releases and push to HuggingFace
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        EASYOCR_VERSION:
+          - ${{ github.event.inputs.easyocr_version || '1.7.2' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+  
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install pip dependencies
+        uses: BSFishy/pip-action@v1
+        with:
+          packages: |
+            easyocr==${{ matrix.EASYOCR_VERSION }}
+            gradio==2.8.10
+            fastapi==0.75.0
+  
+      - name: Download models by auto load
+        env:
+          MODULE_PATH: "./models"
+        run: python ./models/download.py
+
+      - name: Install huggingface cli
+        uses: BSFishy/pip-action@v1
+        with:
+          packages: huggingface_hub[cli]
+          extra: --user
+
+      - name: Log in to Hugging Face CLI
+        run: huggingface-cli login --token ${{ secrets.HF_TOKEN }}
+
+      - name: Upload models to Hugging Face Models
+        run: huggingface-cli upload-large-folder --repo-type model --revision master ${{ secrets.HF_USERNAME }}/easyocr ./models/model
+
+      - name: Upload models to Hugging Face Models
+        run: huggingface-cli tag --repo-type model --revision master ${{ secrets.HF_USERNAME }}/easyocr ${{ matrix.EASYOCR_VERSION }}
+
+      - name: Log out from Hugging Face CLI
+        if: always()
+        run: huggingface-cli logout
