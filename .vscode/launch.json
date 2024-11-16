@@ -1,0 +1,28 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "debugpy: gradio app",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/gradio/app.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}/.gradio",
+            "env": {
+                "MODULE_PATH": "${workspaceFolder}/models"
+            }
+        },
+        {
+            "name": "debugpy: models download",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/models/download.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "MODULE_PATH": "${workspaceFolder}/models"
+            }
+        }
+    ]
+}
