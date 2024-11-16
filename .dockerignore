@@ -1,0 +1,12 @@
+EasyOCR/.git/
+EasyOCR/.github/
+EasyOCR/examples/
+EasyOCR/scripts/
+EasyOCR/trainer/
+EasyOCR/unit_test/
+EasyOCR/.gitignore
+EasyOCR/custom_model.md
+EasyOCR/Dockerfile
+EasyOCR/MANIFEST.in
+gradio/.git/
+gradio/.gitattributes

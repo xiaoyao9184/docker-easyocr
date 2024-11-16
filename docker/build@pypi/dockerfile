@@ -1,0 +1,39 @@
+ARG EASYOCR_VERSION=1.7.2
+ARG GRADIO_VERSION=2.8.10
+ARG FASTAPI_VERSION=0.75.0
+
+
+FROM pytorch/pytorch:2.2.1-cuda12.1-cudnn8-runtime
+
+ARG EASYOCR_VERSION
+ARG GRADIO_VERSION
+ARG FASTAPI_VERSION
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    libgl1-mesa-glx \
+    libsm6 \
+    libxext6 \
+    libglib2.0-0 \
+    libxrender-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install --upgrade pip
+
+COPY ./gradio /app/gradio
+RUN pip3 install --no-cache-dir easyocr==${EASYOCR_VERSION} gradio==${GRADIO_VERSION} fastapi==${FASTAPI_VERSION}
+
+WORKDIR /workspace
+
+ENV GRADIO_SERVER_NAME=0.0.0.0
+ENV PYTHONUNBUFFERED=1
+
+ENTRYPOINT [ "python" ]
+
+CMD ["/app/gradio/app.py"]
+
+EXPOSE 8501
+
+VOLUME /root/.EasyOCR
